@@ -65,6 +65,7 @@ contract RebaseToken is ERC20 {
     /*//////////////////////////////////////////////////////////////
                                 INTERNAL
     //////////////////////////////////////////////////////////////*/
+    /// @param user who to mint accrued interest to
     function _mintAccruedInterest(address user) internal {
         // find their current balance of rebase tokens that have been minted to the user
         // calculate their current balance including any interest
