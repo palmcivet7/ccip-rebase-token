@@ -4,12 +4,13 @@ pragma solidity 0.8.24;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
+import {IRebaseToken, IERC20} from "./interfaces/IRebaseToken.sol";
 
 /// @title Rebase Token
 /// @notice This is a crosschain rebase token that incentivizes users to deposit into a vault.
 /// @notice The interest rate in the contract can only decrease.
 /// @notice Each user will have their own interest rate, that is the global interest rate at the time of deposit.
-contract RebaseToken is ERC20, Ownable, AccessControl {
+contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
     /*//////////////////////////////////////////////////////////////
                                  ERRORS
     //////////////////////////////////////////////////////////////*/
@@ -82,7 +83,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl {
     /// @notice Calculate the balance for the user including the interest that has accumulated since last update
     /// @param user User who's balance to calculate and return
     /// @return balance User's calculated balance including interest
-    function balanceOf(address user) public view override returns (uint256) {
+    function balanceOf(address user) public view override(ERC20, IERC20) returns (uint256) {
         // get the current principle balance of the user (tokens that have actually been minted to the user)
         // multiply the principal balance by the interest that has accumulated since the balance was last updated
         return (super.balanceOf(user) * _calculateUserAccumulatedInterestSinceLastUpdate(user) / PRECISION_FACTOR);
@@ -92,7 +93,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl {
     /// @param to user to transfer tokens to
     /// @param amount of tokens to transfer
     /// @return true if transfer was successful
-    function transfer(address to, uint256 amount) public override returns (bool) {
+    function transfer(address to, uint256 amount) public override(ERC20, IERC20) returns (bool) {
         _mintAccruedInterest(msg.sender);
         _mintAccruedInterest(to);
         if (amount == type(uint256).max) {
@@ -109,7 +110,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl {
     /// @param to user to transfer tokens to
     /// @param amount of tokens to transfer
     /// @return true if transfer was successful
-    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
+    function transferFrom(address from, address to, uint256 amount) public override(ERC20, IERC20) returns (bool) {
         _mintAccruedInterest(from);
         _mintAccruedInterest(to);
         if (amount == type(uint256).max) {
