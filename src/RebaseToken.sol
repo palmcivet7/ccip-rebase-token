@@ -19,7 +19,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
     /*//////////////////////////////////////////////////////////////
                                VARIABLES
     //////////////////////////////////////////////////////////////*/
-    uint256 internal constant PRECISION_FACTOR = 1e27;
+    uint256 internal constant PRECISION_FACTOR = 1e18;
     bytes32 internal constant MINT_AND_BURN_ROLE = keccak256("MINT_AND_BURN_ROLE");
 
     uint256 internal s_interestRate = (5 * PRECISION_FACTOR) / 1e8; // 10^-8 == 1/ 10^8
@@ -73,9 +73,6 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
     /// @param from the user to burn tokens from
     /// @param amount the amount of tokens to burn
     function burn(address from, uint256 amount) external onlyRole(MINT_AND_BURN_ROLE) {
-        if (amount == type(uint256).max) {
-            amount = balanceOf(from);
-        }
         _mintAccruedInterest(from);
         _burn(from, amount);
     }
@@ -178,5 +175,11 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
     /// @return interestRate
     function getInterestRate() external view returns (uint256) {
         return s_interestRate;
+    }
+
+    /// @notice get the role that is required to mint and burn tokens
+    /// @return MINT_AND_BURN_ROLE
+    function getMintAndBurnRole() external view returns (bytes32) {
+        return MINT_AND_BURN_ROLE;
     }
 }

@@ -48,6 +48,10 @@ contract Vault {
     /// @notice Allows users to redeem their rebase tokens to ETH
     /// @param amount of rebase tokens to redeem
     function redeem(uint256 amount) external {
+        if (amount == type(uint256).max) {
+            amount = i_rebaseToken.balanceOf(msg.sender);
+        }
+
         // burn the tokens from user
         i_rebaseToken.burn(msg.sender, amount);
         // send the user ETH
