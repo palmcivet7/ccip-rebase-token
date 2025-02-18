@@ -83,6 +83,10 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
     function balanceOf(address user) public view override(ERC20, IERC20) returns (uint256) {
         // get the current principle balance of the user (tokens that have actually been minted to the user)
         // multiply the principal balance by the interest that has accumulated since the balance was last updated
+        // review - function multiples (number of tokens minted by user) * (1 + accruedInterest). HOWEVER
+        // if the user burns tokens, we mint them the accrued interest and then increase their balance,
+        // which means the balanceOf() function will return a higher number of the interest earned from the
+        // burned tokens
         return (super.balanceOf(user) * _calculateUserAccumulatedInterestSinceLastUpdate(user) / PRECISION_FACTOR);
     }
 
@@ -96,6 +100,11 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
         if (amount == type(uint256).max) {
             amount = balanceOf(msg.sender);
         }
+        // @review -
+        // 1. attacker deposits a small amount when interest rate is high
+        // 2. attacker deposits large amount from different wallet when interest rate is low
+        // 3. attacker transfers large amount to the wallet with high interest rate
+        // they now have a high interest rate for a large deposit
         if (balanceOf(to) == 0) {
             s_userInterestRate[to] = s_userInterestRate[msg.sender];
         }
