@@ -188,7 +188,7 @@ contract RebaseToken is ERC20, Ownable, AccessControl, IRebaseToken {
 
     /// @notice get the role that is required to mint and burn tokens
     /// @return MINT_AND_BURN_ROLE
-    function getMintAndBurnRole() external view returns (bytes32) {
+    function getMintAndBurnRole() external pure returns (bytes32) {
         return MINT_AND_BURN_ROLE;
     }
 }
