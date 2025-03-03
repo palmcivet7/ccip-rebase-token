@@ -139,7 +139,7 @@ contract RebaseTokenTest is Test {
         vm.expectRevert(
             abi.encodeWithSignature("AccessControlUnauthorizedAccount(address,bytes32)", user, mintAndBurnRole)
         );
-        rebaseToken.mint(user, 1e18);
+        rebaseToken.mint(user, 1e18, rebaseToken.getInterestRate());
 
         vm.prank(user);
         vm.expectRevert(
