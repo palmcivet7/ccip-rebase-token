@@ -6,7 +6,7 @@ rpc_endpoints= { eth-sepolia = "${SEPOLIA_RPC_URL}", arb-sepolia = "${ARBITRUM_S
 
 remappings = [
     "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
-    "@chainlink/contracts-ccip=lib/ccip/contracts",
+    "@ccip/contracts=lib/chainlink-local/lib/ccip/contracts",
     "@chainlink-local=lib/chainlink-local",
 ]
 
