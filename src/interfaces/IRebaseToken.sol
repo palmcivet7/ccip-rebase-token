@@ -10,4 +10,5 @@ interface IRebaseToken is IERC20 {
     // function balanceOf(address) external view returns (uint256);
     function getInterestRate() external view returns (uint256);
     function getUserInterestRate(address) external view returns (uint256);
+    function grantMintAndBurnRole(address) external;
 }
