@@ -4,6 +4,7 @@ out = "out"
 libs = ["lib"]
 rpc_endpoints = { eth-sepolia = "${SEPOLIA_RPC_URL}", arb-sepolia = "${ARBITRUM_SEPOLIA_RPC_URL}", zksync = "https://sepolia.era.zksync.dev"}
 
+
 remappings = [
     "@openzeppelin/contracts=lib/openzeppelin-contracts/contracts",
     "@ccip/contracts=lib/chainlink-local/lib/ccip/contracts",
