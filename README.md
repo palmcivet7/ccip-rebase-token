@@ -11,3 +11,6 @@ This project was made following along with a Cyfrin tutorial.
    2. This global interest rate can only decrease to incentivize/reward early adopters
 
    
+`chmod +x ./bridgeToZkSync.sh`
+
+`./bridgeToZkSync.sh`
